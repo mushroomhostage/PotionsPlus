@@ -80,18 +80,6 @@ class PotionsPlusListener implements Listener {
     //      List list = Item.POTION.b(this) = MCP Item.potion.getEffects(potionDamage)
     // Event only fires if there are any effects:
     //      if (list != null && !list.isEmpty()) {
-    // ItemPotion has a MCP 'private HashMap effectsCache', Bukkit 'private HashMap a()', public List b(int i)
-    // builds from MCP PotionHelper.getPotionEffects() = Bukkit PotionBrewer
-    /* Interesting list of potion loc strings: (doesn't seem to be use, or even unused! Clear but no Milky..)
-    private static final String potionPrefixes[] =
-    {
-        "potion.prefix.mundane", "potion.prefix.uninteresting", "potion.prefix.bland", "potion.prefix.clear", "potion.prefix.milky", "potion.prefix.diffuse", "potion.prefix.artless", "potion.prefix.thin", "potion.prefix.awkward", "potion.prefix.flat",
-        "potion.prefix.bulky", "potion.prefix.bungling", "potion.prefix.buttered", "potion.prefix.smooth", "potion.prefix.suave", "potion.prefix.debonair", "potion.prefix.thick", "potion.prefix.elegant", "potion.prefix.fancy", "potion.prefix.charming",
-        "potion.prefix.dashing", "potion.prefix.refined", "potion.prefix.cordial", "potion.prefix.sparkling", "potion.prefix.potent", "potion.prefix.foul", "potion.prefix.odorless", "potion.prefix.rank", "potion.prefix.harsh", "potion.prefix.acrid",
-        "potion.prefix.gross", "potion.prefix.stinky"
-    };
-    */
-
     /* TODO: needed?
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled=false) //true) 
@@ -148,9 +136,50 @@ public class PotionsPlus extends JavaPlugin implements Listener {
         list.add(new net.minecraft.server.MobEffect(effectID, duration, amplification)); 
 
         map.put(13, list);
+
+
+        String[] as = getAppearances();
+        int i = 0;
+        for (String a: as) {
+            log.info(i + " = " + a);
+            i += 1;
+        }
     }
 
-    /** Get the internal map of potion effects. */
+
+    /** Get localization strings (potion.prefix.*) for potions.
+
+    Note: the indexes do NOT correspond to damage values
+    And not all are used.. or even unused! (there is Clear Potion but no Milky Potion anywhere I can see)
+
+    private static final String potionPrefixes[] =
+    {
+        "potion.prefix.mundane", "potion.prefix.uninteresting", "potion.prefix.bland", "potion.prefix.clear", "potion.prefix.milky", "potion.prefix.diffuse", "potion.prefix.artless", "potion.prefix.thin", "potion.prefix.awkward", "potion.prefix.flat",
+        "potion.prefix.bulky", "potion.prefix.bungling", "potion.prefix.buttered", "potion.prefix.smooth", "potion.prefix.suave", "potion.prefix.debonair", "potion.prefix.thick", "potion.prefix.elegant", "potion.prefix.fancy", "potion.prefix.charming",
+        "potion.prefix.dashing", "potion.prefix.refined", "potion.prefix.cordial", "potion.prefix.sparkling", "potion.prefix.potent", "potion.prefix.foul", "potion.prefix.odorless", "potion.prefix.rank", "potion.prefix.harsh", "potion.prefix.acrid",
+        "potion.prefix.gross", "potion.prefix.stinky"
+    };
+    */
+    String[] getAppearances() {
+        try {
+            Field field = net.minecraft.server.PotionBrewer.class.getDeclaredField("appearances"); // MCP potionPrefixes
+            field.setAccessible(true);
+            Object obj = field.get(null);
+            if (obj instanceof String[]) {
+                return (String[])obj;
+            } else {
+                throw new RuntimeException("Unable to access potion appearances, unexpected type: " + obj);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }   
+
+    /** Get the internal map of potion effects. 
+    
+    ItemPotion has a MCP 'private HashMap effectsCache', Bukkit 'private HashMap a()', public List b(int i)
+    builds from MCP PotionHelper.getPotionEffects() = Bukkit PotionBrewer
+    */
     HashMap getEffectsCache() {
         try {
             Field effectsCacheField = net.minecraft.server.ItemPotion.class.getDeclaredField("a");
