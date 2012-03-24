@@ -1,36 +1,30 @@
-defaultDuration: 200
-defaultAmplification: 0
-
 potions:
 - potion: Artless
-  effect: potion.digSpeed
-  amplification: 100
-  duration: 200
+  effects:
+  - [potion.digSpeed, 100, 200]
 - potion: Thin
-  effect: potion.hunger
-  amplification: 0
-  duration: 1500
+  effects:
+  - [potion.hunger, 0, 1500]
 - potion: Bungling
-  effect: potion.jump
-  amplification: 10
-  duration: 200
+  effects:
+  - [potion.jump, 10, 200]
 - potion: Smooth
-  effect: potion.resistance
-  duration: 600
+  effects:
+  - [potion.resistance, 0, 600]
 - potion: Sparkling
-  effect: potion.waterBreathing
-  duration: 1500
+  effects:
+  - [potion.waterBreathing, 0, 1500]
 - potion: Rank
-  effect: potion.blindness
-  duration: 300
+  effects:
+  - [potion.blindness, 0, 300]
 - potion: Gross
-  effect: potion.confusion
-  duration: 300
+  effects:
+  - [potion.confusion, 0, 300]
 - potion: Stinky
-  effect: potion.digSlowDown
-  duration: 600
+  effects:
+  - [potion.digSlowDown, 0, 300]
 
-# http://www.minecraftwiki.net/wiki/Potions#Unused_Potions
+# http:, , www.minecraftwiki.net, wiki, Potions#Unused_Potions
 damageValues:
     Clear: [6,7]
     Diffuse: [11]

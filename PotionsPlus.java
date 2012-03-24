@@ -129,6 +129,13 @@ public class PotionsPlus extends JavaPlugin implements Listener {
             log.info("Effects cache: " + key + " = " + value);
         }
 
+        loadConfig(effectsCache);
+
+    }
+
+    @SuppressWarnings("unchecked")
+    public void loadConfig(HashMap effectsCache) {
+
         // Bukkit MobEffectList = MCP Potion 
         // Bukkit MobEffect = MCP PotionEffect
         // TODO: call for customized effects
@@ -141,56 +148,37 @@ public class PotionsPlus extends JavaPlugin implements Listener {
         List<Map<?,?>> maps = getConfig().getMapList("potions");
         for (Map<?,?> map: maps) {
             // Get potion name and damage value(s)
-            Object nameObj = map.get("potion");
-            if (!(nameObj instanceof String)) {
-                log.warning("Invalid potion name type "+nameObj+", ignoring");
-                continue;
-            }
-            String name = (String)nameObj;
+            String name = (String)map.get("potion");
             List<Integer> damageValues = getConfig().getIntegerList("damageValues."+name);
             if (damageValues == null) {
-                log.warning("Invalid potion name "+nameObj+", no damage values found in config");
+                log.warning("Invalid potion name "+name+", no damage values found in config");
                 continue;
             }
             log.info("dv="+damageValues);
 
-            // Get mob effect name and ID
-            Object effectObj = map.get("effect");
-            if (!(effectObj instanceof String)) {
-                log.warning("Invalid potion effect type "+effectObj+", ignoring");
-                continue;
-            }
-            String effectName = (String)effectObj;
-            Object effectIdObj = mobEffectNames.get(effectName);
-            if (effectIdObj == null || !(effectIdObj instanceof Integer)) {
-                log.warning("Invalid potion effect name "+effectName+", not in "+mobEffectNames+", ignoring");
-                continue;
-            }
-            int effectId = ((Integer)effectIdObj).intValue();
+            // Build native effects list from config
+            ArrayList<net.minecraft.server.MobEffect> nmsEffectsList = new ArrayList<net.minecraft.server.MobEffect>();
 
-            // Then duration...if given
-            Object durationObj = map.get("duration");
-            int duration = getConfig().getInt("defaultDuration", 20*10);
-            if (durationObj != null && durationObj instanceof Integer) {
-                duration = ((Integer)durationObj).intValue();
+            List<List<Object>> effectsList = (List<List<Object>>)map.get("effects");
+
+            for (List effectLine: effectsList) {
+                String effectName = (String)effectLine.get(0);
+                int amplification = ((Integer)effectLine.get(1)).intValue();
+                int duration = ((Integer)effectLine.get(2)).intValue();
+
+                log.info("el="+effectLine);
+
+                int effectId = mobEffectNames.get(effectName);
+
+                // Apply effects
+                nmsEffectsList.add(new net.minecraft.server.MobEffect(effectId, duration, amplification)); 
+
             }
 
-            // ...and finally amplification
-            Object ampObj = map.get("amplification");
-            int amp = getConfig().getInt("defaultAmplification", 0);
-            if (ampObj != null && ampObj instanceof Integer) {
-                amp = ((Integer)ampObj).intValue();
-            }
-
-            // Apply effects
-
-            ArrayList<net.minecraft.server.MobEffect> list = new ArrayList<net.minecraft.server.MobEffect>();
-            // TODO: multiple effects per potion!! It is supported, so we need it
-            list.add(new net.minecraft.server.MobEffect(effectId, duration, amp)); 
-
+            // Apply all effects to all damage values
             for (int damageValue: damageValues) {
-                effectsCache.put(damageValue, list);
-                log.info("Adding "+damageValue+" = "+list);
+                effectsCache.put(damageValue, nmsEffectsList);
+                log.info("Adding "+damageValue+" = "+nmsEffectsList);
             }
         }
     }
