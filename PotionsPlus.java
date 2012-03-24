@@ -141,7 +141,11 @@ public class PotionsPlus extends JavaPlugin implements Listener {
 
         // TODO: new effects!
         ArrayList list = new ArrayList();
-        list.add(net.minecraft.server.MobEffectList.FASTER_DIG); // TODO: must be a MobEffect, or crashes
+
+        int effectID = net.minecraft.server.MobEffectList.FASTER_DIG.getId();
+        int duration = 20*10;
+        int amplification = 10;
+        list.add(new net.minecraft.server.MobEffect(effectID, duration, amplification)); 
 
         map.put(13, list);
     }
