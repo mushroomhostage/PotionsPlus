@@ -76,11 +76,30 @@ class PotionsPlusListener implements Listener {
         Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled=true) 
+    // EntityPotion
+    //      List list = Item.POTION.b(this) = MCP Item.potion.getEffects(potionDamage)
+    // Event only fires if there are any effects:
+    //      if (list != null && !list.isEmpty()) {
+    // ItemPotion has a MCP 'private HashMap effectsCache', Bukkit 'private HashMap a()', public List b(int i)
+    // builds from MCP PotionHelper.getPotionEffects() = Bukkit PotionBrewer
+    /* List of potion loc strings:
+    private static final String potionPrefixes[] =
+    {
+        "potion.prefix.mundane", "potion.prefix.uninteresting", "potion.prefix.bland", "potion.prefix.clear", "potion.prefix.milky", "potion.prefix.diffuse", "potion.prefix.artless", "potion.prefix.thin", "potion.prefix.awkward", "potion.prefix.flat",
+        "potion.prefix.bulky", "potion.prefix.bungling", "potion.prefix.buttered", "potion.prefix.smooth", "potion.prefix.suave", "potion.prefix.debonair", "potion.prefix.thick", "potion.prefix.elegant", "potion.prefix.fancy", "potion.prefix.charming",
+        "potion.prefix.dashing", "potion.prefix.refined", "potion.prefix.cordial", "potion.prefix.sparkling", "potion.prefix.potent", "potion.prefix.foul", "potion.prefix.odorless", "potion.prefix.rank", "potion.prefix.harsh", "potion.prefix.acrid",
+        "potion.prefix.gross", "potion.prefix.stinky"
+    };
+    */
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled=false) //true) 
     public void onPotionSplash(PotionSplashEvent event) {
         plugin.log.info("Splash  "+event);
 
         ThrownPotion potion = event.getPotion();
+
+        plugin.log.info("pot = " + potion);
+
         Collection<PotionEffect> potionEffects = potion.getEffects();
 
         Collection<LivingEntity> hits = event.getAffectedEntities();
@@ -103,6 +122,11 @@ public class PotionsPlus extends JavaPlugin implements Listener {
 
     public void onEnable() {
         new PotionsPlusListener(this);
+
+        for (int i = 16384; i < 20000; i += 1) {
+            List list = net.minecraft.server.Item.POTION.b(i);
+            log.info("effect " + i + " = " + list);
+        }
     }
 
     public void onDisable() {
