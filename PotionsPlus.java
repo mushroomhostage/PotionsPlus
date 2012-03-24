@@ -173,6 +173,11 @@ public class PotionsPlus extends JavaPlugin implements Listener {
 
             List<List<Object>> effectsList = (List<List<Object>>)map.get("effects");
 
+            if (effectsList == null) {
+                log.warning("No effects listed for "+map.get("potion")+", ignoring");
+                continue;
+            }
+
             for (List effectLine: effectsList) {
                 String effectName = (String)effectLine.get(0);
                 int amplification = ((Integer)effectLine.get(1)).intValue();
@@ -182,13 +187,17 @@ public class PotionsPlus extends JavaPlugin implements Listener {
 
                 // Apply effects
                 nmsEffectsList.add(new net.minecraft.server.MobEffect(effectId, duration, amplification)); 
-
             }
 
             // Apply all effects to all damage values
+            if (getConfig().getBoolean("verbose")) {
+                log.info("Potion " + map.get("potion"));
+            }
             for (int damageValue: damageValues) {
                 effectsCache.put(damageValue, nmsEffectsList);
-                log.info("Adding "+damageValue+" = "+nmsEffectsList);
+                if (getConfig().getBoolean("verbose")) {
+                    log.info("- Adding "+damageValue+" = "+nmsEffectsList);
+                }
             }
         }
     }

@@ -1,6 +1,9 @@
+verbose: true
+
 potions:
 - potion: Clear
   effects:
+
 - potion: Diffuse
   effects:
 
@@ -31,9 +34,13 @@ potions:
 
 - potion: Refined
   effects:
+  - [potion.moveSpeed, 2, 3000]
+  - [potion.regeneration, 0, 3000]
+  - [potion.harm, 2, 0]
 
 - potion: Cordial
   effects:
+  - [potion.digSlowDown, 0, 300]
 
 - potion: Sparkling
   effects:
@@ -41,6 +48,15 @@ potions:
 
 - potion: Potent
   effects:
+  - [potion.moveSpeed, 0, 1200]
+  - [potion.digSpeed, 1, 1200]
+  - [potion.damageBoost, 0, 1200]
+  - [potion.heal, 2, 0]
+  - [potion.jump, 1, 1200]
+  - [potion.resistance, 1, 1200]
+  - [potion.fireResistance, 1, 1200]
+  - [potion.waterBreathing, 1, 1200]
+  - [potion.hunger, 0, 1200]
 
 - potion: Rank
   effects:
@@ -48,6 +64,9 @@ potions:
 
 - potion: Acrid
   effects:
+  - [potion.confusion, 0, 300]
+  - [potion.blindness, 0, 150]
+  - [potion.poison, 0, 50]
 
 - potion: Gross
   effects:
@@ -55,9 +74,8 @@ potions:
 
 - potion: Stinky
   effects:
-  - [potion.digSlowDown, 0, 300]
 
-# http:, , www.minecraftwiki.net, wiki, Potions#Unused_Potions
+# http://www.minecraftwiki.net/wiki/Potions#Unused_Potions
 damageValues:
     Clear: [6,7]
     Diffuse: [11]
