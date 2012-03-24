@@ -148,13 +148,25 @@ public class PotionsPlus extends JavaPlugin implements Listener {
         List<Map<?,?>> maps = getConfig().getMapList("potions");
         for (Map<?,?> map: maps) {
             // Get potion name and damage value(s)
-            String name = (String)map.get("potion");
-            List<Integer> damageValues = getConfig().getIntegerList("damageValues."+name);
-            if (damageValues == null) {
-                log.warning("Invalid potion name "+name+", no damage values found in config");
-                continue;
+            List<Integer> damageValues;
+
+            if (map.get("potion") instanceof Integer) {
+                damageValues = new ArrayList<Integer>();
+                damageValues.add((Integer)map.get("potion"));
+            } else {
+                String name = (String)map.get("potion");
+                damageValues = getConfig().getIntegerList("damageValues."+name);
+                if (damageValues == null) {
+                    log.warning("Invalid potion name "+name+", no damage values found in config");
+                    continue;
+                }
             }
-            log.info("dv="+damageValues);
+
+            // TODO: configurable splash // if (map.get("splash") != null && ((Boolean)map.get("splash")).booleanValue()) {
+                for (int dv: new ArrayList<Integer>(damageValues)) {
+                    damageValues.add(dv + 16384);
+                }
+            //}
 
             // Build native effects list from config
             ArrayList<net.minecraft.server.MobEffect> nmsEffectsList = new ArrayList<net.minecraft.server.MobEffect>();
@@ -165,8 +177,6 @@ public class PotionsPlus extends JavaPlugin implements Listener {
                 String effectName = (String)effectLine.get(0);
                 int amplification = ((Integer)effectLine.get(1)).intValue();
                 int duration = ((Integer)effectLine.get(2)).intValue();
-
-                log.info("el="+effectLine);
 
                 int effectId = mobEffectNames.get(effectName);
 

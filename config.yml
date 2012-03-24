@@ -1,25 +1,58 @@
 potions:
+- potion: Clear
+  effects:
+- potion: Diffuse
+  effects:
+
 - potion: Artless
   effects:
   - [potion.digSpeed, 100, 200]
+
 - potion: Thin
   effects:
   - [potion.hunger, 0, 1500]
+
 - potion: Bungling
   effects:
   - [potion.jump, 10, 200]
+
 - potion: Smooth
   effects:
   - [potion.resistance, 0, 600]
+
+- potion: Suave
+  effects:
+
+- potion: Debonair
+  effects:
+
+- potion: Charming
+  effects:
+
+- potion: Refined
+  effects:
+
+- potion: Cordial
+  effects:
+
 - potion: Sparkling
   effects:
   - [potion.waterBreathing, 0, 1500]
+
+- potion: Potent
+  effects:
+
 - potion: Rank
   effects:
   - [potion.blindness, 0, 300]
+
+- potion: Acrid
+  effects:
+
 - potion: Gross
   effects:
   - [potion.confusion, 0, 300]
+
 - potion: Stinky
   effects:
   - [potion.digSlowDown, 0, 300]
