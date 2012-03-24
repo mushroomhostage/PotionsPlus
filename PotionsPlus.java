@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package me.exphc.PotionsPlus;
 
 import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -58,6 +59,7 @@ import org.bukkit.configuration.*;
 import org.bukkit.configuration.file.*;
 import org.bukkit.scheduler.*;
 import org.bukkit.enchantments.*;
+import org.bukkit.potion.*;
 import org.bukkit.*;
 
 import net.minecraft.server.CraftingManager;
@@ -65,11 +67,42 @@ import net.minecraft.server.CraftingManager;
 import org.bukkit.craftbukkit.enchantments.CraftEnchantment;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 
+class PotionsPlusListener implements Listener {
+    PotionsPlus plugin;
+
+    public PotionsPlusListener(PotionsPlus plugin) {
+        this.plugin = plugin;
+
+        Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled=true) 
+    public void onPotionSplash(PotionSplashEvent event) {
+        plugin.log.info("Splash  "+event);
+
+        ThrownPotion potion = event.getPotion();
+        Collection<PotionEffect> potionEffects = potion.getEffects();
+
+        Collection<LivingEntity> hits = event.getAffectedEntities();
+
+        for (LivingEntity hit: hits) {
+            for (PotionEffect potionEffect: potionEffects) {
+                plugin.log.info("pe = " + potionEffect);
+
+                plugin.log.info(" amp="+potionEffect.getAmplifier());
+                plugin.log.info(" dur="+potionEffect.getDuration());
+                plugin.log.info(" type="+potionEffect.getType());
+            }
+        }
+    }
+}
+
 public class PotionsPlus extends JavaPlugin implements Listener {
     Logger log = Logger.getLogger("Minecraft");
 
 
     public void onEnable() {
+        new PotionsPlusListener(this);
     }
 
     public void onDisable() {
