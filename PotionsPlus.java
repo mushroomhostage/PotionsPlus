@@ -114,12 +114,14 @@ public class PotionsPlus extends JavaPlugin implements Listener {
     public void onEnable() {
         //new PotionsPlusListener(this);
 
-        HashMap map = getEffectsCache();
+        HashMap effectsCache = getEffectsCache();
 
-        for (Object key: map.keySet()) {
-            Object value = map.get(key);
+        log.info("Effects cache size: " + effectsCache.size());
 
-            log.info("k " + key + " = " + value);
+        for (Object key: effectsCache.keySet()) {
+            Object value = effectsCache.get(key);
+
+            log.info("Effects cache: " + key + " = " + value);
         }
 
         // Bukkit MobEffectList = MCP Potion 
@@ -127,17 +129,65 @@ public class PotionsPlus extends JavaPlugin implements Listener {
         // TODO: call for customized effects
         //new net.minecraft.server.MobEffect
 
-        // TODO: new effects!
-        ArrayList list = new ArrayList();
+        // TODO: new effects (add custom to byId[32])
+        HashMap<String,Integer> mobEffectNames = getMobEffectNames();
 
-        int effectID = getMobEffectNames().get("potion.digSpeed"); //net.minecraft.server.MobEffectList.FASTER_DIG.getId();
-        int duration = 20*10;
-        int amplification = 10;
-        list.add(new net.minecraft.server.MobEffect(effectID, duration, amplification)); 
 
-        map.put(13, list);
+        List<Map<?,?>> maps = getConfig().getMapList("potions");
+        for (Map<?,?> map: maps) {
+            // Get potion name and damage value(s)
+            Object nameObj = map.get("potion");
+            if (!(nameObj instanceof String)) {
+                log.warning("Invalid potion name type "+nameObj+", ignoring");
+                continue;
+            }
+            String name = (String)nameObj;
+            List<Integer> damageValues = getConfig().getIntegerList("damageValues."+name);
+            if (damageValues == null) {
+                log.warning("Invalid potion name "+nameObj+", no damage values found in config");
+                continue;
+            }
+            log.info("dv="+damageValues);
 
-        //log.info("="+getMobEffectNames());
+            // Get mob effect name and ID
+            Object effectObj = map.get("effect");
+            if (!(effectObj instanceof String)) {
+                log.warning("Invalid potion effect type "+effectObj+", ignoring");
+                continue;
+            }
+            String effectName = (String)effectObj;
+            Object effectIdObj = mobEffectNames.get(effectName);
+            if (effectIdObj == null || !(effectIdObj instanceof Integer)) {
+                log.warning("Invalid potion effect name "+effectName+", not in "+mobEffectNames+", ignoring");
+                continue;
+            }
+            int effectId = ((Integer)effectIdObj).intValue();
+
+            // Then duration...if given
+            Object durationObj = map.get("duration");
+            int duration = getConfig().getInt("defaultDurationTicks", 20*10);
+            if (durationObj != null && durationObj instanceof Integer) {
+                duration = ((Integer)durationObj).intValue();
+            }
+
+            // ...and finally amplification
+            Object ampObj = map.get("amplification");
+            int amp = getConfig().getInt("defaultAmplification", 0);
+            if (ampObj != null && ampObj instanceof Integer) {
+                amp = ((Integer)ampObj).intValue();
+            }
+
+            // Apply effects
+
+            ArrayList<net.minecraft.server.MobEffect> list = new ArrayList<net.minecraft.server.MobEffect>();
+            // TODO: multiple effects per potion!! It is supported, so we need it
+            list.add(new net.minecraft.server.MobEffect(effectId, duration, amp)); 
+
+            for (int damageValue: damageValues) {
+                effectsCache.put(damageValue, list);
+                log.info("Adding "+damageValue+" = "+list);
+            }
+        }
     }
 
     /** Get map of internal mob effect names (potion.digSpeed) to ids (3) */
