@@ -130,29 +130,31 @@ public class PotionsPlus extends JavaPlugin implements Listener {
         // TODO: new effects!
         ArrayList list = new ArrayList();
 
-        int effectID = net.minecraft.server.MobEffectList.FASTER_DIG.getId();
+        int effectID = getMobEffectNames().get("potion.digSpeed"); //net.minecraft.server.MobEffectList.FASTER_DIG.getId();
         int duration = 20*10;
         int amplification = 10;
         list.add(new net.minecraft.server.MobEffect(effectID, duration, amplification)); 
 
         map.put(13, list);
 
+        //log.info("="+getMobEffectNames());
+    }
 
-        /* 
-        String[] as = getAppearances();
-        int i = 0;
-        for (String a: as) {
-            log.info(i + " = " + a);
-            i += 1;
-        }*/
+    /** Get map of internal mob effect names (potion.digSpeed) to ids (3) */
+    HashMap<String,Integer> getMobEffectNames() {
+        HashMap<String,Integer> map = new HashMap<String,Integer>();
 
         for (int i = 0; i < net.minecraft.server.MobEffectList.byId.length; i += 1) {
             if (net.minecraft.server.MobEffectList.byId[i] != null) {
-                log.info(i + " = " + net.minecraft.server.MobEffectList.byId[i].c());  // returns I; = MCP getName()
+                String name = net.minecraft.server.MobEffectList.byId[i].c(); // returns I; = MCP getName()
+
+                map.put(name, i);
+                //map.put(name.replace("potion.", ""), i);
             }
         }
-    }
 
+        return map;
+    }
 
     /** Get localization strings (potion.prefix.*) for potions.
 
@@ -167,6 +169,8 @@ public class PotionsPlus extends JavaPlugin implements Listener {
         "potion.prefix.gross", "potion.prefix.stinky"
     };
     */
+
+    /* unused in our code, too!
     String[] getAppearances() {
         try {
             Field field = net.minecraft.server.PotionBrewer.class.getDeclaredField("appearances"); // MCP potionPrefixes
@@ -181,6 +185,7 @@ public class PotionsPlus extends JavaPlugin implements Listener {
             throw new RuntimeException(e);
         }
     }   
+    */
 
     /** Get the internal map of potion effects. 
     
