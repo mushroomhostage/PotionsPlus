@@ -1,0 +1,18 @@
+defaultDuration: 200
+defaultAmplification: 0
+
+potions:
+- potion: Artless
+  effect: potion.digSpeed
+  amplification: 100
+  duration: 200
+
+- potion: Thin
+  effect: potion.hunger
+  amplification: 0
+  duration: 50
+
+# TODO: all
+damageValues:
+  Artless: [13]
+  Thin: [14,15]

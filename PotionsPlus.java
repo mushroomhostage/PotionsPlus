@@ -114,6 +114,11 @@ public class PotionsPlus extends JavaPlugin implements Listener {
     public void onEnable() {
         //new PotionsPlusListener(this);
 
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+        reloadConfig();
+
+
         HashMap effectsCache = getEffectsCache();
 
         log.info("Effects cache size: " + effectsCache.size());
@@ -165,7 +170,7 @@ public class PotionsPlus extends JavaPlugin implements Listener {
 
             // Then duration...if given
             Object durationObj = map.get("duration");
-            int duration = getConfig().getInt("defaultDurationTicks", 20*10);
+            int duration = getConfig().getInt("defaultDuration", 20*10);
             if (durationObj != null && durationObj instanceof Integer) {
                 duration = ((Integer)durationObj).intValue();
             }
