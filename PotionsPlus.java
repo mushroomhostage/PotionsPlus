@@ -134,9 +134,16 @@ public class PotionsPlus extends JavaPlugin implements Listener {
             log.info("k " + key + " = " + value);
         }
 
-        // TODO: new effects!
-        map.put(6, map.get(2));
+        // Bukkit MobEffectList = MCP Potion 
+        // Bukkit MobEffect = MCP PotionEffect
+        // TODO: call for customized effects
+        //new net.minecraft.server.MobEffect
 
+        // TODO: new effects!
+        ArrayList list = new ArrayList();
+        list.add(net.minecraft.server.MobEffectList.FASTER_DIG); // TODO: must be a MobEffect, or crashes
+
+        map.put(13, list);
     }
 
     /** Get the internal map of potion effects. */
