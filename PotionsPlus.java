@@ -92,6 +92,8 @@ class PotionsPlusListener implements Listener {
     };
     */
 
+    /* TODO: needed?
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled=false) //true) 
     public void onPotionSplash(PotionSplashEvent event) {
         plugin.log.info("Splash  "+event);
@@ -114,6 +116,7 @@ class PotionsPlusListener implements Listener {
             }
         }
     }
+    */
 }
 
 public class PotionsPlus extends JavaPlugin implements Listener {
@@ -121,7 +124,7 @@ public class PotionsPlus extends JavaPlugin implements Listener {
 
 
     public void onEnable() {
-        new PotionsPlusListener(this);
+        //new PotionsPlusListener(this);
 
         HashMap map = getEffectsCache();
 
@@ -131,12 +134,9 @@ public class PotionsPlus extends JavaPlugin implements Listener {
             log.info("k " + key + " = " + value);
         }
 
-/*
-        for (int i = 0; i < 100; i += 1) {
-            List list = net.minecraft.server.Item.POTION.b(i);
-            log.info("effect " + i + " = " + list);
-        }
-*/
+        // TODO: new effects!
+        map.put(6, map.get(2));
+
     }
 
     /** Get the internal map of potion effects. */
