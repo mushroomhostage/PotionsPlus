@@ -82,7 +82,7 @@ class PotionsPlusListener implements Listener {
     //      if (list != null && !list.isEmpty()) {
     // ItemPotion has a MCP 'private HashMap effectsCache', Bukkit 'private HashMap a()', public List b(int i)
     // builds from MCP PotionHelper.getPotionEffects() = Bukkit PotionBrewer
-    /* List of potion loc strings:
+    /* Interesting list of potion loc strings: (doesn't seem to be use, or even unused! Clear but no Milky..)
     private static final String potionPrefixes[] =
     {
         "potion.prefix.mundane", "potion.prefix.uninteresting", "potion.prefix.bland", "potion.prefix.clear", "potion.prefix.milky", "potion.prefix.diffuse", "potion.prefix.artless", "potion.prefix.thin", "potion.prefix.awkward", "potion.prefix.flat",
@@ -123,9 +123,39 @@ public class PotionsPlus extends JavaPlugin implements Listener {
     public void onEnable() {
         new PotionsPlusListener(this);
 
-        for (int i = 16384; i < 20000; i += 1) {
+        HashMap map = getEffectsCache();
+
+        for (Map.Entry entry: map.entrySet()) {
+            Object key = entry.getKey();
+            Object value = entry.getValue();
+
+            log.info("k " + key + " = " + value);
+        }
+
+/*
+        for (int i = 0; i < 100; i += 1) {
             List list = net.minecraft.server.Item.POTION.b(i);
             log.info("effect " + i + " = " + list);
+        }
+*/
+    }
+
+    /** Get the internal map of potion effects. */
+    HashMap getEffectsCache() {
+        try {
+            Field effectsCacheField = net.minecraft.server.ItemPotion.class.getDeclaredField("a");
+            effectsCacheField.setAccessible(true);
+
+            Object obj = effectsCacheField.get(net.minecraft.server.Item.POTION);
+            if (obj instanceof HashMap) {
+                return (HashMap)obj;
+            } else {
+                throw new RuntimeException("Unable to access effects cache, unexpected type: " + obj);
+            }
+        } catch (Exception e) {
+            log.severe("Reflection failed, nothing will work: " + e);
+            throw new RuntimeException(e);
+            // TODO: disable plugin
         }
     }
 
