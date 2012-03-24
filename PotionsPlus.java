@@ -138,11 +138,18 @@ public class PotionsPlus extends JavaPlugin implements Listener {
         map.put(13, list);
 
 
+        /* 
         String[] as = getAppearances();
         int i = 0;
         for (String a: as) {
             log.info(i + " = " + a);
             i += 1;
+        }*/
+
+        for (int i = 0; i < net.minecraft.server.MobEffectList.byId.length; i += 1) {
+            if (net.minecraft.server.MobEffectList.byId[i] != null) {
+                log.info(i + " = " + net.minecraft.server.MobEffectList.byId[i].c());  // returns I; = MCP getName()
+            }
         }
     }
 
