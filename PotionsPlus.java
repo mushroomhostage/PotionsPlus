@@ -125,9 +125,8 @@ public class PotionsPlus extends JavaPlugin implements Listener {
 
         HashMap map = getEffectsCache();
 
-        for (Map.Entry entry: map.entrySet()) {
-            Object key = entry.getKey();
-            Object value = entry.getValue();
+        for (Object key: map.keySet()) {
+            Object value = map.get(key);
 
             log.info("k " + key + " = " + value);
         }
