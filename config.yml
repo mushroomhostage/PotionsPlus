@@ -25,7 +25,6 @@ potions:
   effects:
   - [potion.resistance, 0, 600]
 
-# original effect in http://m.gamefaqs.com/boards/606524-/60480976
 - potion: Suave
   effects:
   - [potion.moveSpeed, 0, 3600]
