@@ -8,6 +8,7 @@ potions:
 
 - potion: Diffuse
   effects:
+  - [potion.moveSpeed, 10, 1800]
 
 - potion: Artless
   effects:
