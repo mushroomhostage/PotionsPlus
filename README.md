@@ -5,6 +5,8 @@ and match any of the 17 available potion effects (including 7 effects otherwise 
 customizing their amplification, duration, and assigning them to any potion bottle of your choosing
 (including the 17+ items recognized by the game but otherwise unused).
 
+***New! [PotionsPlus 1.0](http://dev.bukkit.org/server-mods/potionsplus/files/1-potions-plus-1-0/)***
+
 Features:
 
 * No client mods required
@@ -192,3 +194,4 @@ and are the same color.
 
 Also interested in new enchantment effects? Check out [EnchantMore](http://dev.bukkit.org/server-mods/enchantmore/).
 
+***[Fork me on GitHub](https://github.com/mushroomhostage/PotionsPlus)***
