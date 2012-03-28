@@ -8,7 +8,8 @@ potions:
 
 - potion: Diffuse
   effects:
-  - [potion.moveSpeed, 10, 1800]
+  - [potion.moveSpeed, 10, 900]
+  - [potion.blindness, 1, 450]
 
 - potion: Artless
   effects:
@@ -38,6 +39,7 @@ potions:
 
 - potion: Charming
   effects:
+  - [potion.moveSpeed, 3, 1800]
 
 - potion: Refined
   effects:
