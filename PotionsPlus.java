@@ -108,7 +108,7 @@ class PotionsPlusListener implements Listener {
 }
 
 public class PotionsPlus extends JavaPlugin implements Listener {
-    Logger log = Logger.getLogger("Minecraft");
+    Logger logger = Logger.getLogger("Minecraft");
 
 
     public void onEnable() {
@@ -121,16 +121,22 @@ public class PotionsPlus extends JavaPlugin implements Listener {
 
         HashMap effectsCache = getEffectsCache();
 
-        log.info("Effects cache size: " + effectsCache.size());
+        log("Effects cache size: " + effectsCache.size());
 
         for (Object key: effectsCache.keySet()) {
             Object value = effectsCache.get(key);
 
-            log.info("Effects cache: " + key + " = " + value);
+            log("Effects cache: " + key + " = " + value);
         }
 
         loadConfig(effectsCache);
 
+    }
+
+    public void log(String message) {
+        if (getConfig().getBoolean("verbose")) {
+            logger.info(message);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -157,7 +163,7 @@ public class PotionsPlus extends JavaPlugin implements Listener {
                 String name = (String)map.get("potion");
                 damageValues = getConfig().getIntegerList("damageValues."+name);
                 if (damageValues == null) {
-                    log.warning("Invalid potion name "+name+", no damage values found in config");
+                    logger.warning("Invalid potion name "+name+", no damage values found in config");
                     continue;
                 }
             }
@@ -174,7 +180,7 @@ public class PotionsPlus extends JavaPlugin implements Listener {
             List<List<Object>> effectsList = (List<List<Object>>)map.get("effects");
 
             if (effectsList == null) {
-                log.warning("No effects listed for "+map.get("potion")+", ignoring");
+                log("No effects listed for "+map.get("potion")+", ignoring");
                 continue;
             }
 
@@ -190,14 +196,11 @@ public class PotionsPlus extends JavaPlugin implements Listener {
             }
 
             // Apply all effects to all damage values
-            if (getConfig().getBoolean("verbose")) {
-                log.info("Potion " + map.get("potion"));
-            }
+            log("Potion " + map.get("potion"));
+
             for (int damageValue: damageValues) {
                 effectsCache.put(damageValue, nmsEffectsList);
-                if (getConfig().getBoolean("verbose")) {
-                    log.info("- Adding "+damageValue+" = "+nmsEffectsList);
-                }
+                log("- Adding "+damageValue+" = "+nmsEffectsList);
             }
         }
     }
@@ -266,7 +269,7 @@ public class PotionsPlus extends JavaPlugin implements Listener {
                 throw new RuntimeException("Unable to access effects cache, unexpected type: " + obj);
             }
         } catch (Exception e) {
-            log.severe("Reflection failed, nothing will work: " + e);
+            logger.severe("Reflection failed, nothing will work: " + e);
             throw new RuntimeException(e);
             // TODO: disable plugin
         }

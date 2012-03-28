@@ -3,6 +3,8 @@ verbose: true
 potions:
 - potion: Clear
   effects:
+  - [potion.digSpeed, 1, 9600]
+  - [potion.weakness, 0, 1800]
 
 - potion: Diffuse
   effects:
@@ -23,11 +25,16 @@ potions:
   effects:
   - [potion.resistance, 0, 600]
 
+# original effect in http://m.gamefaqs.com/boards/606524-/60480976
 - potion: Suave
   effects:
+  - [potion.moveSpeed, 0, 3600]
+  - [potion.damageBoost, 0, 3600]
 
 - potion: Debonair
   effects:
+  - [potion.damageBoost, 0, 9600]
+  - [potion.hunger, 0, 4800]
 
 - potion: Charming
   effects:
