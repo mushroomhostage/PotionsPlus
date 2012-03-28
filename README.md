@@ -5,7 +5,7 @@ and match any of the 17 available potion effects (including 7 effects otherwise 
 customizing their amplification, duration, and assigning them to any potion bottle of your choosing
 (including the 17+ items recognized by the game but otherwise unused).
 
-***New! [PotionsPlus 1.0](http://dev.bukkit.org/server-mods/potionsplus/files/1-potions-plus-1-0/)***
+***New! [PotionsPlus 1.0](http://dev.bukkit.org/server-mods/potionsplus/files/1-potions-plus-1-0/)*** - released 2012/03/27
 
 Features:
 
