@@ -5,7 +5,7 @@ and match any of the 17 available potion effects (including 7 effects otherwise 
 customizing their amplification, duration, and assigning them to any potion bottle of your choosing
 (including the 17+ items recognized by the game but otherwise unused).
 
-***New! [PotionsPlus 1.0](http://dev.bukkit.org/server-mods/potionsplus/files/1-potions-plus-1-0/)*** - released 2012/03/27
+***[PotionsPlus 1.0](http://dev.bukkit.org/server-mods/potionsplus/files/1-potions-plus-1-0/)*** - released 2012/03/27
 
 Features:
 
@@ -64,6 +64,28 @@ amenable to redefinition:
         Stinky: [62,63]
 
 but you can add any value here you want, even redefine existing potions or invent your own numbering scheme.
+
+The damage values given above are the base values for drinkable; the equivalent slash potion (damage value + 
+16384) will also be defined. For reference, in case you want to obtain the splash potions in another plugin,
+here are the corresponding damage values (note you don't need to add these to PotionsPlus -- they are inferred from the values above):
+
+        Clear: [16390,16391]
+        Diffuse: [16395]
+        Artless: [16397]
+        Thin: [16398,16399]
+        Bungling: [16406,16407]
+        Smooth: [16411]
+        Suave: [16413]
+        Debonair: [16414,16415]
+        Charming: [16422,16423]
+        Refined: [16427]
+        Cordial: [16429]
+        Sparkling: [16430,16431]
+        Potent: [16432]
+        Rank: [16438,16439]
+        Acrid: [16443]
+        Gross: [16445]
+        Stinky: [16446,16447]
 
 **potions**: A list of potions to define. This is a list of maps, with the following keys:
 
